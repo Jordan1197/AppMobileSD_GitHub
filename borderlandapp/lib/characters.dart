@@ -49,14 +49,14 @@ Future<CharacterDetailsCall> fetchCharacterDetails(Future<User> user,Character c
       'Access-Control-Allow-Origin': "*",
       'Access-Control-Allow-Methods': "*",
       'Content-Type': 'application/json',
-      'Token': u.token,
+      'Token': u.token, 
     },
   );
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
-    CharacterDetailsCall ch = CharacterDetailsCall.fromJson(jsonDecode(response.body));
+    CharacterDetailsCall ch = CharacterDetailsCall.fromJson(jsonDecode(response.body)) ;
     
     return  ch;
 
