@@ -113,10 +113,10 @@ class CharacterDetailsState extends State<CharacterDetails> {
               ]),
         ));
 
-    const skilltree = Padding(
+    var skilltree = Padding(
         padding: EdgeInsets.fromLTRB(20, 10, 0, 40),
         child: Text(
-          "there it is",
+          "SKill name : ", //+ c.skills.name,
           textAlign: TextAlign.start,
         ));
 
@@ -135,7 +135,7 @@ class CharacterDetailsState extends State<CharacterDetails> {
                 name,
                 SizedBox(
                     child: Image.network(
-                  c.name,
+                  c.skins.image,
                   fit: BoxFit.fill,
                 )),
                 descriptionheader,
