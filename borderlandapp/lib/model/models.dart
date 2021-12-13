@@ -253,7 +253,7 @@ class CharacterDetailsCall extends BaseModel{
     name = json['name'];
     classs = Class.fromJson(json['class']);
     skins = Cosmetic.fromJson(json['skins']);
-    skills = Skill.fromJson(json['skills']);
+    //skills = Skill.fromJson(json['skills']);
   }
 }
 

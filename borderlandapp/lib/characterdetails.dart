@@ -116,7 +116,7 @@ class CharacterDetailsState extends State<CharacterDetails> {
     var skilltree = Padding(
         padding: EdgeInsets.fromLTRB(20, 10, 0, 40),
         child: Text(
-          "SKill name : " + c.skills.name,
+          "SKill name : ", //+ c.skills.name,
           textAlign: TextAlign.start,
         ));
 
