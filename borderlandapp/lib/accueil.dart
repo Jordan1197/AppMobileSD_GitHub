@@ -8,19 +8,16 @@ import 'package:borderlandapp/planets.dart';
 import 'package:borderlandapp/NavDraw.dart';
 import 'package:borderlandapp/model/models.dart';
 
-
 void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-  
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    
-
     return MaterialApp(
       title: 'Accueil',
       theme: ThemeData(
@@ -60,7 +57,7 @@ class _AccueilState extends State<Accueil> {
   @override
   Widget build(BuildContext context) {
     var globalUser = ModalRoute.of(context)!.settings.arguments as User;
-    
+
     final h1 = Padding(
         padding: const EdgeInsets.fromLTRB(0, 10, 0, 20),
         child: RichText(
@@ -74,10 +71,12 @@ class _AccueilState extends State<Accueil> {
               ]),
         ));
 
-     final p1 = Padding(
+    final p1 = Padding(
         padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
         child: Text(
-          "Welcome "+ globalUser.name +" to the Borderlands 3 Helper! Use the sidebar to navigate and find what you're looking for.",
+          "Welcome " +
+              globalUser.name +
+              " to the Borderlands 3 Helper! Use the sidebar to navigate and find what you're looking for.",
           textAlign: TextAlign.center,
         ));
 
@@ -169,7 +168,6 @@ class _AccueilState extends State<Accueil> {
       ),
     );
 
-    
 //section navbar
     int _navSelectedIndex = 0;
     const TextStyle navOptionStyle =
@@ -184,8 +182,8 @@ class _AccueilState extends State<Accueil> {
         style: navOptionStyle,
       ),
       Text(
-      'Index 2: Characters',
-      style: navOptionStyle,
+        'Index 2: Characters',
+        style: navOptionStyle,
       ),
       Text(
         'Index 3: Ennemies',
@@ -199,7 +197,6 @@ class _AccueilState extends State<Accueil> {
         'Index 5: Settings',
         style: navOptionStyle,
       ),
-      
     ];
     //fonction navbar
     final _pageOptions = [
@@ -210,18 +207,20 @@ class _AccueilState extends State<Accueil> {
       PlanetList(),
       Settings(),
     ];
-    void _onNavBarTap(int index){
+    void _onNavBarTap(int index) {
       setState(() {
-       _navSelectedIndex = index;
-       
-         Navigator.push(context,
-          MaterialPageRoute(
-            builder: (context) => _pageOptions[index],
-            settings: RouteSettings(arguments:  globalUser,)
-          ));
-       
+        _navSelectedIndex = index;
+
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => _pageOptions[index],
+                settings: RouteSettings(
+                  arguments: globalUser,
+                )));
       });
     }
+
     //fin fonction
     final customNavBar = BottomNavigationBar(
       items: const <BottomNavigationBarItem>[
@@ -259,18 +258,17 @@ class _AccueilState extends State<Accueil> {
           ),
           label: 'Settings',
         ),
-             
       ],
       currentIndex: _navSelectedIndex,
       unselectedItemColor: Colors.grey,
-      selectedItemColor:Colors.black,
+      selectedItemColor: Colors.black,
       onTap: _onNavBarTap,
     );
-    
+
     //fin navbar
-    
+
     return Scaffold(
-      appBar: AppBar(),      
+      appBar: AppBar(),
       body: Center(
         child: Container(
           color: Colors.white,
@@ -289,13 +287,12 @@ class _AccueilState extends State<Accueil> {
                 media,
                 h4,
                 p4,
-              ],              
+              ],
             ),
           ),
         ),
       ),
-      
-      drawer: NavDrawer(),      
+      drawer: NavDrawer(),
       bottomNavigationBar: customNavBar,
     );
   }

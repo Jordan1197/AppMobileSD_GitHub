@@ -1,3 +1,4 @@
+import 'package:borderlandapp/itemdetails.dart';
 import 'package:borderlandapp/main.dart';
 import 'package:borderlandapp/model/models.dart';
 import 'package:flutter/material.dart';
@@ -73,7 +74,6 @@ class _ItemListState extends State<ItemList> {
     super.initState();
   }
 
-  
   @override
   Widget build(BuildContext context) {
     Future<User> u;
@@ -216,16 +216,14 @@ class _ItemListState extends State<ItemList> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(0, 10, 0, 20),
+                                padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
                                 child: RichText(
                                   text: TextSpan(
-                                      style:
-                                          const TextStyle(color: Colors.black),
+                                      style: TextStyle(color: Colors.black),
                                       children: <TextSpan>[
                                         TextSpan(
-                                          text: i.id.toString(),
-                                          style: const TextStyle(
+                                          text: i.name,
+                                          style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 20),
                                         )
@@ -233,10 +231,20 @@ class _ItemListState extends State<ItemList> {
                                 ),
                               ),
                               Container(
-                                  height: 200,
-                                  width: MediaQuery.of(context).size.width,
-                                  child: GestureDetector(
-                                      child: Card(
+                                height: 200,
+                                width: MediaQuery.of(context).size.width,
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const ItemDetails(),
+                                            settings: RouteSettings(
+                                              arguments: i,
+                                            )));
+                                  },
+                                  child: Card(
                                     semanticContainer: true,
                                     clipBehavior: Clip.antiAliasWithSaveLayer,
                                     child: Column(
@@ -248,21 +256,43 @@ class _ItemListState extends State<ItemList> {
                                       children: <Widget>[
                                         Row(
                                           mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Flexible(
+                                                child: RichText(
+                                              text: TextSpan(
+                                                  style: TextStyle(
+                                                      color: Colors.black),
+                                                  children: <TextSpan>[
+                                                    TextSpan(
+                                                      text: i.name,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 20),
+                                                    )
+                                                  ]),
+                                            )),
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: <Widget>[
-                                            /*SizedBox(
-                                                child: Image.network(
-                                              i.equipmentId.toString(),
-                                              width: 100,
-                                              height: 100,
-                                              fit: BoxFit.fill,
-                                            )),*/
-                                            const SizedBox(
-                                              width: 20,
+                                            SizedBox(
+                                              child: Image.network(
+                                                i.imagePath,
+                                                width: 100,
+                                                height: 100,
+                                                fit: BoxFit.fill,
+                                              ),
                                             ),
-                                            /*Flexible(
-                                                child:
-                                                    Text(i.type)),*/
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            Flexible(
+                                              child: Text(i.type.description),
+                                            ),
                                           ],
                                         )
                                       ],
@@ -272,7 +302,9 @@ class _ItemListState extends State<ItemList> {
                                             BorderRadius.circular(10.0)),
                                     elevation: 5,
                                     margin: const EdgeInsets.all(10),
-                                  ))),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -282,7 +314,6 @@ class _ItemListState extends State<ItemList> {
             } else if (snapshot.hasError) {
               return Text('${snapshot.error}');
             }
-            // By default, show a loading spinner.
             return const CircularProgressIndicator(
               backgroundColor: Color.fromARGB(0, 255, 0, 0),
             );

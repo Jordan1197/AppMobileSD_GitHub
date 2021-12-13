@@ -31,7 +31,7 @@ Future<List<Character>> fetchCharacters(Future<User> user) async {
     // then parse the JSON.
     characters = List<Character>.from(
         json.decode(response.body).map((data) => Character.fromJson(data)));
-    
+
     return characters;
   } else {
     // If the server did not return a 200 OK response,
@@ -39,13 +39,17 @@ Future<List<Character>> fetchCharacters(Future<User> user) async {
     throw Exception('Failed to load character');
   }
 }
+
 Future<CharacterDetailsCall>? characterdetails;
-Future<CharacterDetailsCall> fetchCharacterDetails(Future<User> user,Character c) async {
+Future<CharacterDetailsCall> fetchCharacterDetails(
+    Future<User> user, Character c) async {
   User u = await user;
   final response = await http.get(
-    Uri.parse('https://borderlands3apisd.azurewebsites.net/api/characters/name/'+c.name),
+    Uri.parse(
+        'https://borderlands3apisd.azurewebsites.net/api/characters/name/' +
+            c.name),
     headers: {
-      'Access-Control-Allow-Headers': '*',          
+      'Access-Control-Allow-Headers': '*',
       'Access-Control-Allow-Origin': "*",
       'Access-Control-Allow-Methods': "*",
       'Content-Type': 'application/json',
@@ -56,16 +60,17 @@ Future<CharacterDetailsCall> fetchCharacterDetails(Future<User> user,Character c
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
-    CharacterDetailsCall ch = CharacterDetailsCall.fromJson(jsonDecode(response.body));
-    
-    return  ch;
+    CharacterDetailsCall ch =
+        CharacterDetailsCall.fromJson(jsonDecode(response.body));
 
+    return ch;
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
     throw Exception('Failed to load character');
   }
 }
+
 void main() {
   runApp(const MyApp());
 }
@@ -113,7 +118,7 @@ class CharacterList extends StatefulWidget {
 
 class _CharacterListState extends State<CharacterList> {
   late Future<List<Character>> futureCharacters;
-  
+
   @override
   initState() {
     super.initState();
@@ -279,11 +284,18 @@ class _CharacterListState extends State<CharacterList> {
                                 height: 200,
                                 width: MediaQuery.of(context).size.width,
                                 child: GestureDetector(
-                                  onTap: () async { Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                  builder: (context) => const CharacterDetails(),
-                                  settings: RouteSettings(arguments:  await fetchCharacterDetails(u, c),)));},
+                                  onTap: () async {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const CharacterDetails(),
+                                            settings: RouteSettings(
+                                              arguments:
+                                                  await fetchCharacterDetails(
+                                                      u, c),
+                                            )));
+                                  },
                                   child: Card(
                                     semanticContainer: true,
                                     clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -295,23 +307,27 @@ class _CharacterListState extends State<CharacterList> {
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
                                         Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Flexible(child: 
-                                            RichText(
-                                              text:  TextSpan(
-                                              style: TextStyle(color: Colors.black),
-                                              children: <TextSpan>[
-                                                TextSpan(
-                                                  text: c.classs.name,
-                                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                                                )
-                                              ]),
-                                            )
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Flexible(
+                                                child: RichText(
+                                              text: TextSpan(
+                                                  style: TextStyle(
+                                                      color: Colors.black),
+                                                  children: <TextSpan>[
+                                                    TextSpan(
+                                                      text: c.classs.name,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 20),
+                                                    )
+                                                  ]),
+                                            )),
+                                          ],
+                                        ),
+                                        Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: <Widget>[
@@ -326,12 +342,9 @@ class _CharacterListState extends State<CharacterList> {
                                             const SizedBox(
                                               width: 10,
                                             ),
-                                          
                                             Flexible(
-                                              child:
-                                                    Text(c.classs.description),                                            
-                                          ),
-                                          
+                                              child: Text(c.classs.description),
+                                            ),
                                           ],
                                         )
                                       ],
@@ -356,65 +369,7 @@ class _CharacterListState extends State<CharacterList> {
             return const CircularProgressIndicator(
               backgroundColor: Color.fromARGB(0, 255, 0, 0),
             );
-          })
-
-      /*SingleChildScrollView(
-          child: Center(
-        child: Container(
-          color: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                pageTitle,
-                //for (var i in laliste)
-                  Container(
-                      height: 200,
-                      width: MediaQuery.of(context).size.width,
-                      child: GestureDetector(
-                          onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      CharacterDetails())), //Pass item id to the page and display info on charatersdetails
-                          child: Card(
-                            semanticContainer: true,
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: <Widget>[
-                                    SizedBox(
-                                        child: Image.network(
-                                      'https://chillchonkers.mypinata.cloud/ipfs/QmSGBFjx2DXRu8uXEgBHHfdN965BLzR94vr1dhKt2rBh8q',
-                                      fit: BoxFit.fill,
-                                    )),
-                                    //Text(i.toString()),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    const Text("Description"),
-                                  ],
-                                )
-                              ],
-                            ),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)),
-                            elevation: 5,
-                            margin: const EdgeInsets.all(10),
-                          ))),
-              ],
-            ),
-          ),
-        ),
-      )),*/
-      ,
+          }),
       drawer: NavDrawer(),
       bottomNavigationBar: customNavBar,
     );
