@@ -236,7 +236,7 @@ class CharacterDetailsCall extends BaseModel {
     name = json['name'];
     classs = Class.fromJson(json['class']);
     skins = Cosmetic.fromJson(json['skins']);
-    //skills = Skill.fromJson(json['skills']);
+    skills = Skill.fromJson(json['skills']);
   }
 }
 
@@ -252,7 +252,7 @@ class Cosmetic extends BaseModel {
   });
 
   Cosmetic.fromJson(dynamic parsedJson) {
-    name = parsedJson[0]['name'];
+      name = parsedJson[0]['name'];
 
     image = parsedJson[0]['image'];
     characterId = parsedJson[0]['characterId'];
@@ -279,7 +279,7 @@ class Skill extends BaseModel {
   });
 
   Skill.fromJson(dynamic parsedJson) {
-    characterId = parsedJson[0]['characterid'];
+      
     name = parsedJson[0]['name'];
     description = parsedJson[0]['description'];
     skillTreeName = parsedJson[0]['skillTreeName'];

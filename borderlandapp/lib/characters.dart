@@ -296,6 +296,7 @@ class _CharacterListState extends State<CharacterList> {
                                                       u, c),
                                             )));
                                   },
+                                  
                                   child: Card(
                                     semanticContainer: true,
                                     clipBehavior: Clip.antiAliasWithSaveLayer,
