@@ -1,3 +1,4 @@
+import 'package:borderlandapp/addItem.dart';
 import 'package:borderlandapp/main.dart';
 import 'package:flutter/material.dart';
 import 'package:borderlandapp/items.dart';
@@ -53,15 +54,16 @@ Future<CharacterDetailsCall> fetchCharacterDetails(
       'Access-Control-Allow-Origin': "*",
       'Access-Control-Allow-Methods': "*",
       'Content-Type': 'application/json',
-      'Token': u.token, 
+      'Token': u.token,
     },
   );
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
-    CharacterDetailsCall ch = CharacterDetailsCall.fromJson(jsonDecode(response.body)) ;
+    CharacterDetailsCall ch =
         CharacterDetailsCall.fromJson(jsonDecode(response.body));
+    CharacterDetailsCall.fromJson(jsonDecode(response.body));
 
     return ch;
   } else {
@@ -296,7 +298,6 @@ class _CharacterListState extends State<CharacterList> {
                                                       u, c),
                                             )));
                                   },
-                                  
                                   child: Card(
                                     semanticContainer: true,
                                     clipBehavior: Clip.antiAliasWithSaveLayer,

@@ -75,15 +75,14 @@ class _SettingsState extends State<Settings> {
     final p1 = Padding(
         padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
         child: RichText(
-              text: TextSpan(
-                  style: TextStyle(color: Colors.black),
-                  children: const <TextSpan>[
-                    TextSpan(
-                        text: 'Theme :',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold)),
-                  ]),
-            ));
+          text: TextSpan(
+              style: TextStyle(color: Colors.black),
+              children: const <TextSpan>[
+                TextSpan(
+                    text: 'Theme :',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+              ]),
+        ));
 
     final theme = Padding(
         padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -95,8 +94,8 @@ class _SettingsState extends State<Settings> {
                   style: TextStyle(color: Colors.black),
                   children: const <TextSpan>[
                     TextSpan(
-                        text: 'Light/Dark :',
-                        ),
+                      text: 'Light/Dark :',
+                    ),
                   ]),
             ),
             Switch(
@@ -145,7 +144,13 @@ class _SettingsState extends State<Settings> {
         padding: const EdgeInsets.fromLTRB(0, 20.0, 0, 20.0),
         onPressed: () async {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => const MangageItems(title:'Manage Items')));
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      const MangageItems(title: 'Manage Items'),
+                  settings: RouteSettings(
+                    arguments: globalUser,
+                  )));
         },
         child: const Text(
           "Add Item",
@@ -160,13 +165,13 @@ class _SettingsState extends State<Settings> {
       borderRadius: BorderRadius.circular(15.0),
       color: const Color.fromARGB(0, 0, 0, 0),
       child: MaterialButton(
-        splashColor: Colors.transparent,  
+        splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         minWidth: 300,
         padding: const EdgeInsets.fromLTRB(0, 20.0, 0, 20.0),
         onPressed: () async {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => const Settings()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const Settings()));
         },
         child: const Text(
           "Sign Out",
@@ -226,9 +231,10 @@ class _SettingsState extends State<Settings> {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => _pageOptions[index],
-              settings: RouteSettings(arguments:  globalUser,)
-            ));
+                builder: (context) => _pageOptions[index],
+                settings: RouteSettings(
+                  arguments: globalUser,
+                )));
       });
     }
 

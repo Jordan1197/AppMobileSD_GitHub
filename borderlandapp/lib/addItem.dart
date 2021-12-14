@@ -1,3 +1,7 @@
+// ignore_for_file: file_names
+
+import 'package:borderlandapp/main.dart';
+import 'package:borderlandapp/model/models.dart';
 import 'package:flutter/material.dart';
 import 'package:borderlandapp/ennemies.dart';
 import 'package:borderlandapp/items.dart';
@@ -5,14 +9,121 @@ import 'package:borderlandapp/characters.dart';
 import 'package:borderlandapp/settings.dart';
 import 'package:borderlandapp/Planets.dart';
 import 'package:borderlandapp/accueil.dart';
-import 'package:borderlandapp/NavDraw.dart';
-import 'package:async/async.dart';
 import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
+
+//API CALLS
+List<EquipmentType> types = [];
+List<String> typesName = [];
+List<Rarity> rarities = [];
+List<String> raritiesName = [];
+List<Ennemy> ennemies = [];
+List<String> ennemiesNames = [];
+
+Future<List<EquipmentType>> fetchEqTypes(Future<User> user) async {
+  User u = await user;
+  final response = await http.get(
+    Uri.parse(
+        'https://borderlands3apisd.azurewebsites.net/api/EquipmentTypes/'),
+    headers: {
+      'Access-Control-Allow-Headers': '*',
+      'Access-Control-Allow-Origin': "*",
+      'Access-Control-Allow-Methods': "*",
+      'Content-Type': 'application/json',
+      'Token': u.token,
+    },
+  );
+
+  if (response.statusCode == 200) {
+    // If the server did return a 200 OK response,
+    // then parse the JSON.
+
+    types = List<EquipmentType>.from(
+        json.decode(response.body).map((data) => EquipmentType.fromJson(data)));
+    if (typesName.isEmpty) {
+      for (var i = 0; i < types.length; i++) {
+        typesName.add(types[i].name);
+      }
+    }
+
+    return types;
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load equipment types');
+  }
+}
+
+Future<List<Rarity>> fetchRarities(Future<User> user) async {
+  User u = await user;
+  final response = await http.get(
+    Uri.parse(
+        'https://borderlands3apisd.azurewebsites.net/api/Rarities/'),
+    headers: {
+      'Access-Control-Allow-Headers': '*',
+      'Access-Control-Allow-Origin': "*",
+      'Access-Control-Allow-Methods': "*",
+      'Content-Type': 'application/json',
+      'Token': u.token,
+    },
+  );
+
+  if (response.statusCode == 200) {
+    // If the server did return a 200 OK response,
+    // then parse the JSON.
+
+    rarities = List<Rarity>.from(
+        json.decode(response.body).map((data) => Rarity.fromJson(data)));
+    if (raritiesName.isEmpty) {
+      for (var i = 0; i < types.length; i++) {
+        raritiesName.add(rarities[i].name);
+      }
+    }
+
+    return rarities;
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load rarities');
+  }
+}
+
+Future<List<Ennemy>> fetchEnnemies(Future<User> user) async {
+  User u = await user;
+  final response = await http.get(
+    Uri.parse(
+        'https://borderlands3apisd.azurewebsites.net/api/Ennemies/'),
+    headers: {
+      'Access-Control-Allow-Headers': '*',
+      'Access-Control-Allow-Origin': "*",
+      'Access-Control-Allow-Methods': "*",
+      'Content-Type': 'application/json',
+      'Token': u.token,
+    },
+  );
+
+  if (response.statusCode == 200) {
+    // If the server did return a 200 OK response,
+    // then parse the JSON.
+
+    ennemies = List<Ennemy>.from(
+        json.decode(response.body).map((data) => Ennemy.fromJson(data)));
+    if (ennemiesNames.isEmpty) {
+      for (var i = 0; i < types.length; i++) {
+        ennemiesNames.add(types[i].name);
+      }
+    }
+
+    return ennemies;
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load ennemies');
+  }
+}
 
 void main() {
   runApp(const MyApp());
@@ -27,15 +138,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Manage Items',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
       home: const MangageItems(title: 'Manage Items'),
@@ -46,15 +148,6 @@ class MyApp extends StatelessWidget {
 class MangageItems extends StatefulWidget {
   const MangageItems({Key? key, required this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -62,44 +155,32 @@ class MangageItems extends StatefulWidget {
 }
 
 class _MangageItems extends State<MangageItems> {
-  final nameController = TextEditingController();
-  final redTextController = TextEditingController();
-  final descriptionController = TextEditingController();
-  var picker;
-  List<String> options = <String>[
-    'Weapon',
-    'Shield',
-    'Grenade',
-    'Artifact',
-    'Class Mod'
-  ];
-  String dropdownValue = 'Weapon';
-  List<String> rarity = <String>[
-    'Legendary',
-    'Epic',
-    'Rare',
-    'Uncommon',
-    'Common'
-  ];
-  String rarityValue = 'Legendary';
-  List<String> ennemy = <String>[
-    'Genevieve',
-    'Captain Traunt',
-    'Hyde/Heckle',
-    'Graveward',
-    'Lee'
-  ];
-  String ennemyValue = 'Genevieve';
+  late Future<List<EquipmentType>> futureEqTypes;
+  late Future<List<Rarity>> futureRarities;
+  late Future<List<Ennemy>> futureEnnemies;
 
   @override
   void initState() {
     super.initState();
     picker = new ImagePicker();
   }
-  
+
+  final nameController = TextEditingController();
+  final redTextController = TextEditingController();
+  final descriptionController = TextEditingController();
+  var picker;
+
+  String dropdownValue = 'Weapon';
+  String rarityValue = 'Legendary';
+  String ennemyValue = 'Genevieve';
 
   @override
   Widget build(BuildContext context) {
+    Future<User> u;
+    var globalUser = ModalRoute.of(context)!.settings.arguments as User;
+    u = UserLogged(globalUser.name, globalUser.password);
+    futureEqTypes = fetchEqTypes(u);
+    futureRarities = fetchRarities(u);
     //Title
     final h1 = Padding(
       padding: const EdgeInsets.fromLTRB(0, 10, 0, 20),
@@ -170,7 +251,7 @@ class _MangageItems extends State<MangageItems> {
           "Equipment",
           textAlign: TextAlign.center,
         ));
-    final equipments = Container(
+    late final equipments = Container(
         margin: const EdgeInsets.fromLTRB(0, 15, 0, 0),
         width: MediaQuery.of(context).size.width / 2,
         child: DropdownButton<String>(
@@ -182,14 +263,14 @@ class _MangageItems extends State<MangageItems> {
           },
           style: const TextStyle(color: Colors.blue),
           selectedItemBuilder: (BuildContext context) {
-            return options.map((String value) {
+            return typesName.map((String value) {
               return Text(
                 dropdownValue,
                 style: const TextStyle(color: Colors.black),
               );
             }).toList();
           },
-          items: options.map<DropdownMenuItem<String>>((String value) {
+          items: typesName.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
               child: Text(value),
@@ -216,14 +297,14 @@ class _MangageItems extends State<MangageItems> {
           },
           style: const TextStyle(color: Colors.blue),
           selectedItemBuilder: (BuildContext context) {
-            return rarity.map((String value) {
+            return raritiesName.map((String value) {
               return Text(
                 rarityValue,
                 style: const TextStyle(color: Colors.black),
               );
             }).toList();
           },
-          items: rarity.map<DropdownMenuItem<String>>((String value) {
+          items: raritiesName.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
               child: Text(value),
@@ -250,14 +331,14 @@ class _MangageItems extends State<MangageItems> {
           },
           style: const TextStyle(color: Colors.blue),
           selectedItemBuilder: (BuildContext context) {
-            return ennemy.map((String value) {
+            return ennemiesNames.map((String value) {
               return Text(
                 ennemyValue,
                 style: const TextStyle(color: Colors.black),
               );
             }).toList();
           },
-          items: ennemy.map<DropdownMenuItem<String>>((String value) {
+          items: ennemiesNames.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
               child: Text(value),
@@ -280,6 +361,7 @@ class _MangageItems extends State<MangageItems> {
       //Get the response from the server
       var responseData = await response.stream.toBytes();
       var responseString = String.fromCharCodes(responseData);
+      // ignore: avoid_print
       print(responseString);
     }
 
@@ -289,7 +371,7 @@ class _MangageItems extends State<MangageItems> {
         child: MaterialButton(
           minWidth: 300,
           padding: const EdgeInsets.fromLTRB(0, 20.0, 0, 20.0),
-          child: Text(
+          child: const Text(
             "Select Image",
             style: TextStyle(color: Colors.white),
           ),
@@ -446,6 +528,7 @@ class _MangageItems extends State<MangageItems> {
     //fin navbar
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(),
       body: Center(
         child: Column(
@@ -462,13 +545,13 @@ class _MangageItems extends State<MangageItems> {
             rarities,
             ennemyLabel,
             ennemies,
-            SizedBox(
-                  height: 20.0,
-                ),
+            const SizedBox(
+              height: 20.0,
+            ),
             imgbutton,
-            SizedBox(
-                  height: 20.0,
-                ),
+            const SizedBox(
+              height: 20.0,
+            ),
             addButton,
             cancelButton,
           ],
@@ -479,19 +562,16 @@ class _MangageItems extends State<MangageItems> {
   }
 }
 
-Future<http.Response> postRequest () async {
-  Uri url = Uri.parse('https://pae.ipportalegre.pt/testes2/wsjson/api/app/ws-authenticate');
+Future<http.Response> postRequest() async {
+  Uri url = Uri.parse(
+      'https://pae.ipportalegre.pt/testes2/wsjson/api/app/ws-authenticate');
 
-  Map data = {
-    'apikey': '12345678901234567890'
-  };
+  Map data = {'apikey': '12345678901234567890'};
   //encode Map to JSON
   var body = json.encode(data);
 
   var response = await http.post(url,
-      headers: {"Content-Type": "application/json"},
-      body: body
-  );
+      headers: {"Content-Type": "application/json"}, body: body);
 
   return response;
 }
