@@ -55,18 +55,7 @@ class Login extends StatefulWidget {
   State<Login> createState() => _LoginState();
 }
 
-//getuser
-/*Future<User> fetchUser() async {
-      final response =  await http.get(Uri.parse('https://borderlands3apisd.azurewebsites.net/api/user/1')
-      );
 
-      if(response.statusCode == 200){
-        return User.fromJson(jsonDecode(response.body));
-      }
-      else{
-        throw Exception('Failed to load users');
-      }
-    }*/
 
 String Decrypt(String password){
   Codec<String, String> stringToBase64 = utf8.fuse(base64);
@@ -76,11 +65,11 @@ String Decrypt(String password){
   return decryptedPassword;
 }
 var errorlogin = Text("");
-Future<http.Response> LoginUser (String username, String password) async{
-  final response;
-  globalUser = UserLogged(username, password);
-  if(globalUser != null){
-    response = await http.post(
+Future<bool> LoginUser (String username, String password) async{
+  
+  
+  
+    final response =  await http.post(
     Uri.parse('https://borderlands3apisd.azurewebsites.net/api/User/LogUser'),
 
     headers: {
@@ -94,13 +83,14 @@ Future<http.Response> LoginUser (String username, String password) async{
           'password':password
         }),
     );
-  return response;
-  }
-  else{
-    errorlogin = Text("Erreur login");
-  }
-  response = null;
-  return response;
+    if(response.statusCode == 200){
+      globalUser = UserLogged(username, password);
+      return true;
+    }
+    else{
+      return false;
+    }
+
 }
 
 Future<User> UserLogged(String username,String password) async{
@@ -176,11 +166,16 @@ class _LoginState extends State<Login> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 20.0),
         onPressed: () async {
-                LoginUser(nameController.text,pwdController.text);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const Accueil(),
+                if(await LoginUser(nameController.text,pwdController.text) == true){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const Accueil(),
                                         settings: RouteSettings(arguments: await globalUser,)
                 ));
-                
+                }
+                else{
+                  Navigator.push(context, MaterialPageRoute(builder: (context) =>  Login(title: "Login",)
+                                        
+                ));
+                }
                 },
                 child: Text('Login'),                 
               )

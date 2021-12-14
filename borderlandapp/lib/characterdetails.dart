@@ -59,7 +59,7 @@ class CharacterDetailsState extends State<CharacterDetails> {
   @override
   Widget build(BuildContext context) {
     CharacterDetailsCall c = ModalRoute.of(context)!.settings.arguments as CharacterDetailsCall;
-    
+   
 
     var name = Padding(
         padding: EdgeInsets.fromLTRB(0, 0, 0, 40),
@@ -107,7 +107,7 @@ class CharacterDetailsState extends State<CharacterDetails> {
               style: TextStyle(color: Colors.black),
               children: const <TextSpan>[
                 TextSpan(
-                    text: 'Skill Trees',
+                    text: 'Skills',
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
               ]),
@@ -115,15 +115,138 @@ class CharacterDetailsState extends State<CharacterDetails> {
 
     var skilltree = Padding(
         padding: EdgeInsets.fromLTRB(20, 10, 0, 40),
-        child: Text(
-          "SKill name : ", //+ c.skills.name,
+        child: RichText(
+          textAlign:TextAlign.center,
+          text:TextSpan(
+            style: TextStyle(color:Colors.black),
+            children: <TextSpan>[
+              TextSpan(
+                text: "SKill name : ",
+                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),
+              ),
+              TextSpan(
+                text:c.skills.name,
+              )
+              
+              
+            ]
+          )
+         
+          
+          
+        ));
+    var skinlabel = Padding(
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 40),
+        child: RichText(
+          text:TextSpan(
+            style:TextStyle(color:Colors.black),
+            children: <TextSpan>[
+              TextSpan(
+                text: "Skin",
+                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
+              )
+            ]
+          ),
+          
           textAlign: TextAlign.start,
         ));
-
+    var skinname = Padding(
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 40),
+        child: RichText(
+          text:TextSpan(
+            style:TextStyle(color:Colors.black),
+            children: <TextSpan>[
+              TextSpan(
+                text: c.skins.name,
+                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
+              )
+            ]
+          ),
+          
+          textAlign: TextAlign.start,
+        ));
+    var skillDesc =  Padding(
+        padding: EdgeInsets.fromLTRB(20, 10, 0, 40),
+        child: RichText(
+          text:TextSpan(
+            style:TextStyle(color:Colors.black),
+            children: <TextSpan>[
+              TextSpan(
+                text: "Description : ",
+                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),
+              ),
+              TextSpan(
+                text: c.skills.description,
+                
+              ),
+            ]
+          ),
+          
+          textAlign: TextAlign.start,
+        ));
+    var skilltype =  Padding(
+        padding: EdgeInsets.fromLTRB(20, 10, 0, 40),
+        child: RichText(
+          text:TextSpan(
+            style:TextStyle(color:Colors.black),
+            children: <TextSpan>[
+              TextSpan(
+                text: "Skill Type : ",
+                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),
+              ),
+              TextSpan(
+                text: c.skills.skillType,
+                
+              ),
+            ]
+          ),
+          
+          textAlign: TextAlign.start,
+        ));
+    var skillrequiredlvl =  Padding(
+        padding: EdgeInsets.fromLTRB(20, 10, 0, 40),
+        child: RichText(
+          text:TextSpan(
+            style:TextStyle(color:Colors.black),
+            children: <TextSpan>[
+              TextSpan(
+                text: "Required Level : ",
+                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),
+              ),
+              TextSpan(
+                text: c.skills.requiredLvl.toString(),
+                
+              ),
+            ]
+          ),
+          
+          textAlign: TextAlign.start,
+        ));
+    var skillTreeName =  Padding(
+        padding: EdgeInsets.fromLTRB(20, 10, 0, 40),
+        child: RichText(
+          text:TextSpan(
+            style:TextStyle(color:Colors.black),
+            children: <TextSpan>[
+              TextSpan(
+                text: "Skill Tree name : ",
+                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),
+              ),
+              TextSpan(
+                text: c.skills.skillTreeName,
+                
+              ),
+            ]
+          ),
+          
+          textAlign: TextAlign.start,
+        ));      
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(),
-      body: Center(
+      body:ListView(
+        children: [
+          Center(
         child: Container(
           color: Colors.white,
           child: Padding(
@@ -133,20 +256,33 @@ class CharacterDetailsState extends State<CharacterDetails> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 name,
+                
+                skinlabel,
+                skinname,
+                
                 SizedBox(
-                    child: Image.network(
-                  c.skins.image,
-                  fit: BoxFit.fill,
+                  child: Image.network(
+                    c.skins.image,
+                    fit: BoxFit.fill,
                 )),
+                
+                
                 descriptionheader,
                 description,
                 skilltreeheader,
                 skilltree,
+                skillDesc,
+                skilltype,
+                skillrequiredlvl,
+                skillTreeName,
               ],
             ),
           ),
         ),
       ),
+        ],
+      ) 
+      
     );
   }
 }
