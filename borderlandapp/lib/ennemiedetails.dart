@@ -6,6 +6,7 @@ import 'package:borderlandapp/settings.dart';
 import 'package:borderlandapp/Planets.dart';
 import 'package:borderlandapp/accueil.dart';
 import 'package:borderlandapp/NavDraw.dart';
+import 'package:borderlandapp/model/models.dart';
 
 void main() {
   runApp(const MyApp());
@@ -55,10 +56,12 @@ class EnnemyDetails extends StatefulWidget {
 class EnnemyDetailsState extends State<EnnemyDetails> {
   @override
   Widget build(BuildContext context) {
-    const name = Padding(
+    EnnemyDetailsCall e =
+        ModalRoute.of(context)!.settings.arguments as EnnemyDetailsCall;
+    final name = Padding(
         padding: EdgeInsets.fromLTRB(0, 0, 0, 40),
         child: Text(
-          "Monster Name",
+          e.name,
           textAlign: TextAlign.start,
         ));
 
@@ -75,10 +78,10 @@ class EnnemyDetailsState extends State<EnnemyDetails> {
               ]),
         ));
 
-    const description = Padding(
+    final description = Padding(
         padding: EdgeInsets.fromLTRB(20, 10, 0, 40),
         child: Text(
-          "Desc",
+          e.description,
           textAlign: TextAlign.start,
         ));
 
@@ -96,10 +99,10 @@ class EnnemyDetailsState extends State<EnnemyDetails> {
               ]),
         ));
 
-    const type = Padding(
+    final type = Padding(
         padding: EdgeInsets.fromLTRB(20, 10, 0, 40),
         child: Text(
-          "Creature",
+          e.ennemieType.typeName,
           textAlign: TextAlign.start,
         ));
 
@@ -117,10 +120,10 @@ class EnnemyDetailsState extends State<EnnemyDetails> {
               ]),
         ));
 
-    const status = Padding(
+    final status = Padding(
         padding: EdgeInsets.fromLTRB(20, 10, 0, 40),
         child: Text(
-          "pup",
+          e.status,
           textAlign: TextAlign.start,
         ));
 
@@ -138,10 +141,10 @@ class EnnemyDetailsState extends State<EnnemyDetails> {
               ]),
         ));
 
-    const weakpoint = Padding(
+    final weakpoint = Padding(
         padding: EdgeInsets.fromLTRB(20, 10, 0, 40),
         child: Text(
-          "Head",
+          e.critPoint,
           textAlign: TextAlign.center,
         ));
 
@@ -159,44 +162,49 @@ class EnnemyDetailsState extends State<EnnemyDetails> {
               ]),
         ));
 
-    const drop = Padding(
+    final drop = Padding(
         padding: EdgeInsets.fromLTRB(20, 10, 0, 40),
         child: Text(
-          "Money",
+          e.drop,
           textAlign: TextAlign.start,
         ));
 
     return Scaffold(
-      body: Center(
-        child: Container(
-          color: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.all(36.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                name,
-                SizedBox(
-                    child: Image.asset(
-                  "assets/bl3logo.png",
-                  fit: BoxFit.contain,
-                )),
-                descriptionheader,
-                description,
-                typeheader,
-                type,
-                statusheader,
-                status,
-                weakpointheader,
-                weakpoint,
-                dropheader,
-                drop,
-              ],
+        appBar: AppBar(),
+        body: ListView(
+      children: [
+        Center(
+          child: Container(
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(36.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  name,
+                  SizedBox(
+                      child: Image.network(
+                    e.image,
+                    height: 300,
+                    fit: BoxFit.fill,
+                  )),
+                  descriptionheader,
+                  description,
+                  typeheader,
+                  type,
+                  statusheader,
+                  status,
+                  weakpointheader,
+                  weakpoint,
+                  dropheader,
+                  drop,
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
+      ],
+    ));
   }
 }

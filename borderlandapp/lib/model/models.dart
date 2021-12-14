@@ -232,7 +232,7 @@ class CharacterDetailsCall extends BaseModel {
   late final Cosmetic skins;
   late final Skill skills;
 
-  CharacterDetailsCall.fromJson(dynamic json){
+  CharacterDetailsCall.fromJson(dynamic json) {
     name = json['name'];
     classs = Class.fromJson(json['class']);
     skins = Cosmetic.fromJson(json['skins']);
@@ -241,30 +241,25 @@ class CharacterDetailsCall extends BaseModel {
 }
 
 class Cosmetic extends BaseModel {
-  
   late final String name;
   late final String image;
   late final int characterId;
 
   Cosmetic({
-    
     required this.name,
     required this.image,
     required this.characterId,
   });
 
-   Cosmetic.fromJson(dynamic parsedJson) {
-      
-        name = parsedJson[0]['name'];
-      
-      
-      image = parsedJson[0]['image'];
-      characterId = parsedJson[0]['characterId'];
+  Cosmetic.fromJson(dynamic parsedJson) {
+    name = parsedJson[0]['name'];
+
+    image = parsedJson[0]['image'];
+    characterId = parsedJson[0]['characterId'];
   }
 }
 
 class Skill extends BaseModel {
-  
   late final int characterId;
   late final String name;
   late final String skillType;
@@ -274,7 +269,6 @@ class Skill extends BaseModel {
   late final String skillTreeName;
 
   Skill({
-    
     required this.characterId,
     required this.name,
     required this.description,
@@ -285,14 +279,13 @@ class Skill extends BaseModel {
   });
 
   Skill.fromJson(dynamic parsedJson) {
-      
-      characterId = parsedJson[0]['characterid'];
-      name = parsedJson[0]['name'];
-      description = parsedJson[0]['description'];
-      skillTreeName = parsedJson[0]['skillTreeName'];
-      skillType = parsedJson[0]['skillType'];
-      requiredLvl = parsedJson[0]['requiredLvl'];
-      points = parsedJson[0]['points'];
+    characterId = parsedJson[0]['characterid'];
+    name = parsedJson[0]['name'];
+    description = parsedJson[0]['description'];
+    skillTreeName = parsedJson[0]['skillTreeName'];
+    skillType = parsedJson[0]['skillType'];
+    requiredLvl = parsedJson[0]['requiredLvl'];
+    points = parsedJson[0]['points'];
   }
 }
 
@@ -341,6 +334,40 @@ class Ennemy extends BaseModel {
 
     return _data;
   }
+}
+
+class EnnemyDetailsCall extends BaseModel {
+  EnnemyDetailsCall({
+    required this.name,
+    required this.ennemieType,
+    required this.drop,
+    required this.status,
+    required this.critPoint,
+    required this.specialAbility,
+    required this.description,
+    required this.image,
+  });
+
+  late final String name;
+  late final EnnemyType ennemieType;
+  late final String drop;
+  late final String status;
+  late final String critPoint;
+  late final String specialAbility;
+  late final String description;
+  late final String image;
+
+  EnnemyDetailsCall.fromJson(dynamic json) {
+    name = json[0]['name'];
+    ennemieType = EnnemyType.fromJson(json[0]['ennemieType']);
+    drop = json[0]['drop'];
+    status = json[0]['status'];
+    critPoint = json[0]['critPoint'];
+    specialAbility = json[0]['specialAbility'];
+    description = json[0]['description'];
+    image = json[0]['image'];
+  }
+
 }
 
 class EnnemyType extends BaseModel {

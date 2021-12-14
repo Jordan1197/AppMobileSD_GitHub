@@ -137,7 +137,7 @@ class _AccueilState extends State<Accueil> {
     const p4 = Padding(
         padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
         child: Text(
-          "Ww are passionate Borderlands games players. We wanted an easy way to access information on legendary and unique gear, so we developed a tool that does just that!",
+          "We are passionate Borderlands games players. We wanted an easy way to access information on legendary and unique gear, so we developed a tool that does just that!",
           textAlign: TextAlign.center,
         ));
 

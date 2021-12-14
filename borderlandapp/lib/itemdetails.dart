@@ -6,6 +6,7 @@ import 'package:borderlandapp/settings.dart';
 import 'package:borderlandapp/Planets.dart';
 import 'package:borderlandapp/accueil.dart';
 import 'package:borderlandapp/NavDraw.dart';
+import 'package:borderlandapp/model/models.dart';
 
 void main() {
   runApp(const MyApp());
@@ -55,26 +56,86 @@ class ItemDetails extends StatefulWidget {
 class ItemDetailsState extends State<ItemDetails> {
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+    Item i = ModalRoute.of(context)!.settings.arguments as Item;
+
+    var name = Padding(
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 40),
+        child: RichText(
+          text: TextSpan(
+              style: TextStyle(color: Colors.black),
+              children: <TextSpan>[
+                TextSpan(
+                  text: i.name,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                )
+              ]),
+          textAlign: TextAlign.start,
+        ));
+
+    final descriptionheader = Padding(
+        padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
+        child: RichText(
+          textAlign: TextAlign.start,
+          text: TextSpan(
+              style: TextStyle(color: Colors.black),
+              children: const <TextSpan>[
+                TextSpan(
+                    text: 'Information',
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+              ]),
+        ));
+
+    var redtext = Padding(
+        padding: EdgeInsets.fromLTRB(20, 10, 0, 40),
+        child: Text(
+          i.redText,
+          style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+          textAlign: TextAlign.start,
+        ));
+    var description = Padding(
+        padding: EdgeInsets.fromLTRB(20, 10, 0, 40),
+        child: Text(
+          "The " +
+              i.name +
+              " is a " +
+              i.rarity.name +
+              " " +
+              i.type.name +
+              " manufactured by " +
+              i.manufacturer.name,
+          textAlign: TextAlign.start,
+        ));
+
     return Scaffold(
-      body: Center(
-        child: Container(
-          color: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.all(36.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[],
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(),
+        body: ListView(
+          children: [
+            Center(
+              child: Container(
+                color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.all(36.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      name,
+                      SizedBox(
+                          child: Image.network(
+                        i.imagePath,
+                        fit: BoxFit.fill,
+                      )),
+                      descriptionheader,
+                      redtext,
+                      description,
+                    ],
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
-    );
+          ],
+        ));
   }
 }

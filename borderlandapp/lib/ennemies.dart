@@ -40,6 +40,38 @@ Future<List<Ennemy>> fetchEnnemies(Future<User> user) async {
   }
 }
 
+Future<EnnemyDetailsCall>? ennemyDetails;
+Future<EnnemyDetailsCall> fetchEnnemyDetails(
+    Future<User> user, Ennemy e) async {
+  User u = await user;
+  final response = await http.get(
+    Uri.parse(
+        'https://borderlands3apisd.azurewebsites.net/api/Ennemies/name/' +
+            e.name),
+    headers: {
+      'Access-Control-Allow-Headers': '*',
+      'Access-Control-Allow-Origin': "*",
+      'Access-Control-Allow-Methods': "*",
+      'Content-Type': 'application/json',
+      'Token': u.token, 
+    },
+  );
+
+  if (response.statusCode == 200) {
+    // If the server did return a 200 OK response,
+    // then parse the JSON.
+    EnnemyDetailsCall ch = EnnemyDetailsCall.fromJson(jsonDecode(response.body)) ;
+        EnnemyDetailsCall.fromJson(jsonDecode(response.body));
+
+    return ch;
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load ennemy');
+  }
+}
+
+
 void main() {
   runApp(const MyApp());
 }
@@ -215,7 +247,7 @@ class _EnnemiesListState extends State<EnnemiesList> {
 
     //fin navbar
 
-    return Scaffold(
+     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(),
       body: FutureBuilder<List<Ennemy>>(
@@ -236,16 +268,14 @@ class _EnnemiesListState extends State<EnnemiesList> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(0, 10, 0, 20),
+                                padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
                                 child: RichText(
                                   text: TextSpan(
-                                      style:
-                                          const TextStyle(color: Colors.black),
+                                      style: TextStyle(color: Colors.black),
                                       children: <TextSpan>[
                                         TextSpan(
-                                          text: e.name,
-                                          style: const TextStyle(
+                                          text: "Ennemies",
+                                          style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 20),
                                         )
@@ -253,10 +283,20 @@ class _EnnemiesListState extends State<EnnemiesList> {
                                 ),
                               ),
                               Container(
-                                  height: 200,
-                                  width: MediaQuery.of(context).size.width,
-                                  child: GestureDetector(
-                                      child: Card(
+                                height: 200,
+                                width: MediaQuery.of(context).size.width,
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const EnnemyDetails(),
+                                            settings: RouteSettings(
+                                              arguments: await fetchEnnemyDetails(u, e),
+                                            )));
+                                  },
+                                  child: Card(
                                     semanticContainer: true,
                                     clipBehavior: Clip.antiAliasWithSaveLayer,
                                     child: Column(
@@ -268,21 +308,42 @@ class _EnnemiesListState extends State<EnnemiesList> {
                                       children: <Widget>[
                                         Row(
                                           mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Flexible(
+                                                child: RichText(
+                                              text: TextSpan(
+                                                  style: TextStyle(
+                                                      color: Colors.black),
+                                                  children: <TextSpan>[
+                                                    TextSpan(
+                                                      text: e.name,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 20),
+                                                    )
+                                                  ]),
+                                            )),
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: <Widget>[
                                             SizedBox(
-                                                child: Image.network(
-                                              e.name,
-                                              width: 100,
-                                              height: 100,
-                                              fit: BoxFit.fill,
-                                            )),
+                                             // child: Image.network(
+                                            //    e.,
+                                            //    height: 150,
+                                            //    fit: BoxFit.fill,
+                                           //   ),
+                                            ),
                                             const SizedBox(
-                                              width: 20,
+                                              width: 10,
                                             ),
                                             Flexible(
-                                                child: Text(
-                                                    e.ennemieType.description)),
+                                              child: Text(e.ennemieType.description),
+                                            ),
                                           ],
                                         )
                                       ],
@@ -292,7 +353,9 @@ class _EnnemiesListState extends State<EnnemiesList> {
                                             BorderRadius.circular(10.0)),
                                     elevation: 5,
                                     margin: const EdgeInsets.all(10),
-                                  ))),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -302,7 +365,6 @@ class _EnnemiesListState extends State<EnnemiesList> {
             } else if (snapshot.hasError) {
               return Text('${snapshot.error}');
             }
-            // By default, show a loading spinner.
             return const CircularProgressIndicator(
               backgroundColor: Color.fromARGB(0, 255, 0, 0),
             );

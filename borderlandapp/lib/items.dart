@@ -222,7 +222,7 @@ class _ItemListState extends State<ItemList> {
                                       style: TextStyle(color: Colors.black),
                                       children: <TextSpan>[
                                         TextSpan(
-                                          text: i.name,
+                                          text: "Items",
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 20),
@@ -282,8 +282,7 @@ class _ItemListState extends State<ItemList> {
                                             SizedBox(
                                               child: Image.network(
                                                 i.imagePath,
-                                                width: 100,
-                                                height: 100,
+                                                height: 150,
                                                 fit: BoxFit.fill,
                                               ),
                                             ),
