@@ -252,7 +252,9 @@ class _MangageItems extends State<MangageItems> {
             context,
             MaterialPageRoute(
               builder: (context) => _pageOptions[index],
-            ));
+              settings: RouteSettings(
+                  arguments: globalUser,
+            )));
       });
     }
 
