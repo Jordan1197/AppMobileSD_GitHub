@@ -399,7 +399,10 @@ class _MangageItems extends State<MangageItems> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      const MangageItems(title: 'Manage Items')));
+                      const MangageItems(title: 'Manage Items'),
+                      settings: RouteSettings(
+                      arguments: globalUser,)));
+                      
         },
         child: const Text(
           "Add",
