@@ -317,7 +317,7 @@ class _ItemListState extends State<ItemList> {
               backgroundColor: Color.fromARGB(0, 255, 0, 0),
             );
           }),
-      drawer: NavDrawer(),
+      drawer: NavDrawer(glob: globalUser,),
       bottomNavigationBar: customNavBar,
     );
   }

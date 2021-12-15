@@ -416,10 +416,10 @@ class Planet extends BaseModel {
 
 //User
 class User extends BaseModel {
-  final String name;
-  final String password;
-  final String token;
-  final String role;
+  late final String name;
+  late final String password;
+  late final String token;
+  late final String role;
 
   User({
     required this.name,

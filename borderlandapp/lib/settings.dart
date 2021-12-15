@@ -8,6 +8,7 @@ import 'package:borderlandapp/accueil.dart';
 import 'package:borderlandapp/addItem.dart';
 import 'package:borderlandapp/navdraw.dart';
 import 'package:borderlandapp/model/models.dart';
+import 'package:borderlandapp/main.dart';
 
 void main() {
   runApp(const MyApp());
@@ -139,7 +140,8 @@ class _SettingsState extends State<Settings> {
     final addButton = Material(
       borderRadius: BorderRadius.circular(15.0),
       color: const Color(0xff01A0C7),
-      child: MaterialButton(
+      child:
+      MaterialButton(
         minWidth: 300,
         padding: const EdgeInsets.fromLTRB(0, 20.0, 0, 20.0),
         onPressed: () async {
@@ -160,6 +162,22 @@ class _SettingsState extends State<Settings> {
       ),
     );
 
+    final addButtonDisable = Material(
+      borderRadius: BorderRadius.circular(15.0),
+      color: Colors.grey,
+      child:
+      MaterialButton(
+        minWidth: 300,
+        padding: const EdgeInsets.fromLTRB(0, 20.0, 0, 20.0),
+        onPressed: null,
+        child: const Text(
+          "Admin ??",
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+    );
+
     final signout = Material(
       elevation: 0,
       borderRadius: BorderRadius.circular(15.0),
@@ -171,7 +189,7 @@ class _SettingsState extends State<Settings> {
         padding: const EdgeInsets.fromLTRB(0, 20.0, 0, 20.0),
         onPressed: () async {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const Settings()));
+              MaterialPageRoute(builder: (context) => const Login(title: "Login",)));
         },
         child: const Text(
           "Sign Out",
@@ -296,12 +314,17 @@ class _SettingsState extends State<Settings> {
             theme,
             h2,
             warning,
-            addButton,
+            if(globalUser.role == "Admin")
+              addButton
+            else
+              addButtonDisable,
+             
+            
             signout,
           ],
         ),
       ),
-      drawer: NavDrawer(),
+      drawer: NavDrawer(glob: globalUser,),
       bottomNavigationBar: customNavBar,
     );
   }

@@ -57,6 +57,7 @@ class _AccueilState extends State<Accueil> {
   @override
   Widget build(BuildContext context) {
     var globalUser = ModalRoute.of(context)!.settings.arguments as User;
+  
 
     final h1 = Padding(
         padding: const EdgeInsets.fromLTRB(0, 10, 0, 20),
@@ -297,7 +298,7 @@ class _AccueilState extends State<Accueil> {
         ],
       ), 
       
-      drawer: NavDrawer(),
+      drawer: NavDrawer(glob: globalUser,),
       bottomNavigationBar: customNavBar,
     );
   }

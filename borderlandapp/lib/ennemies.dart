@@ -369,7 +369,7 @@ class _EnnemiesListState extends State<EnnemiesList> {
               backgroundColor: Color.fromARGB(0, 255, 0, 0),
             );
           }),
-      drawer: NavDrawer(),
+      drawer: NavDrawer(glob: globalUser,),
       bottomNavigationBar: customNavBar,
     );
   }

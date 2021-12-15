@@ -313,7 +313,7 @@ class _PlanetListState extends State<PlanetList> {
               backgroundColor: Color.fromARGB(0, 255, 0, 0),
             );
           }),
-      drawer: NavDrawer(),
+      drawer: NavDrawer(glob: globalUser,),
       bottomNavigationBar: customNavBar,
     );
   }

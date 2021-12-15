@@ -420,7 +420,11 @@ class _MangageItems extends State<MangageItems> {
         padding: const EdgeInsets.fromLTRB(0, 20.0, 0, 20.0),
         onPressed: () async {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const Settings()));
+              MaterialPageRoute(builder: (context) => const Settings(),
+                settings: RouteSettings(
+                  arguments: await u,
+                ),
+              ));
         },
         child: const Text(
           "Cancel",

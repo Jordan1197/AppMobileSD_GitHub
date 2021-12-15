@@ -1,23 +1,23 @@
-import 'package:borderlandapp/addItem.dart';
+import 'package:borderlandapp/itemdetails.dart';
 import 'package:borderlandapp/main.dart';
-import 'package:flutter/material.dart';
-import 'package:borderlandapp/items.dart';
 import 'package:borderlandapp/model/models.dart';
+import 'package:flutter/material.dart';
+import 'package:borderlandapp/characters.dart';
 import 'package:borderlandapp/ennemies.dart';
 import 'package:borderlandapp/settings.dart';
-import 'package:borderlandapp/Planets.dart';
 import 'package:borderlandapp/accueil.dart';
-import 'package:borderlandapp/characterdetails.dart';
 import 'package:borderlandapp/navdraw.dart';
+import 'package:borderlandapp/planets.dart';
+import 'package:borderlandapp/items.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 
-List<Character> characters = [];
-Future<List<Character>> fetchCharacters(Future<User> user) async {
+List<Item> items = [];
+Future<List<Item>> fetchItemsFilter(Future<User> user) async {
   User u = await user;
   final response = await http.get(
-    Uri.parse('https://borderlands3apisd.azurewebsites.net/api/characters'),
+    Uri.parse('https://borderlands3apisd.azurewebsites.net/api/items' ),
     headers: {
       'Access-Control-Allow-Headers': '*',
       'Access-Control-Allow-Origin': "*",
@@ -30,46 +30,13 @@ Future<List<Character>> fetchCharacters(Future<User> user) async {
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
-    characters = List<Character>.from(
-        json.decode(response.body).map((data) => Character.fromJson(data)));
-
-    return characters;
+    items = List<Item>.from(
+        json.decode(response.body).map((data) => Item.fromJson(data)));
+    return items;
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
-    throw Exception('Failed to load character');
-  }
-}
-
-Future<CharacterDetailsCall>? characterdetails;
-Future<CharacterDetailsCall> fetchCharacterDetails(
-    Future<User> user, Character c) async {
-  User u = await user;
-  final response = await http.get(
-    Uri.parse(
-        'https://borderlands3apisd.azurewebsites.net/api/characters/name/' +
-            c.name),
-    headers: {
-      'Access-Control-Allow-Headers': '*',
-      'Access-Control-Allow-Origin': "*",
-      'Access-Control-Allow-Methods': "*",
-      'Content-Type': 'application/json',
-      'Token': u.token,
-    },
-  );
-
-  if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    CharacterDetailsCall ch =
-        CharacterDetailsCall.fromJson(jsonDecode(response.body));
-    CharacterDetailsCall.fromJson(jsonDecode(response.body));
-
-    return ch;
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load character');
+    throw Exception('Failed to load item');
   }
 }
 
@@ -84,45 +51,27 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Character List',
+      title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: CharacterList(),
+      home:  ItemListFilter(),
     );
   }
 }
 
-class CharacterList extends StatefulWidget {
-  const CharacterList({Key? key}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
+class ItemListFilter extends StatefulWidget {
+  const ItemListFilter({Key? key, /*required this.filter*/}) : super(key: key);
+  /*final String filter;*/
   @override
-  State<CharacterList> createState() => _CharacterListState();
+  State<ItemListFilter> createState() => _ItemListFilterState();
 }
 
-class _CharacterListState extends State<CharacterList> {
-  late Future<List<Character>> futureCharacters;
-
+class _ItemListFilterState extends State<ItemListFilter> {
+  late Future<List<Item>> futureItems;
+  
   @override
-  initState() {
+  void initState() {
     super.initState();
   }
 
@@ -131,7 +80,7 @@ class _CharacterListState extends State<CharacterList> {
     Future<User> u;
     var globalUser = ModalRoute.of(context)!.settings.arguments as User;
     u = UserLogged(globalUser.name, globalUser.password);
-    futureCharacters = fetchCharacters(u);
+    futureItems = fetchItemsFilter(u);//widget.filter);
 
     //Page title
     final pageTitle = Padding(
@@ -141,7 +90,7 @@ class _CharacterListState extends State<CharacterList> {
             style: TextStyle(color: Colors.black),
             children: <TextSpan>[
               TextSpan(
-                text: 'Characters list',
+                text: 'Item list',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               )
             ]),
@@ -149,7 +98,7 @@ class _CharacterListState extends State<CharacterList> {
     );
 
     //section navbar
-    int _navSelectedIndex = 2;
+    int _navSelectedIndex = 4;
     const TextStyle navOptionStyle =
         TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
     const List<Widget> NavbarOptions = <Widget>[
@@ -250,14 +199,14 @@ class _CharacterListState extends State<CharacterList> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(),
-      body: FutureBuilder<List<Character>>(
-          future: futureCharacters,
+      body: FutureBuilder<List<Item>>(
+          future: futureItems,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return ListView.builder(
                   itemCount: snapshot.data?.length,
                   itemBuilder: (context, index) {
-                    Character c = snapshot.data![index];
+                    Item i = snapshot.data![index];
                     return Center(
                       child: Container(
                         color: Colors.white,
@@ -274,7 +223,7 @@ class _CharacterListState extends State<CharacterList> {
                                       style: TextStyle(color: Colors.black),
                                       children: <TextSpan>[
                                         TextSpan(
-                                          text: c.name,
+                                          text: "Items",
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 20),
@@ -291,11 +240,9 @@ class _CharacterListState extends State<CharacterList> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const CharacterDetails(),
+                                                const ItemDetails(),
                                             settings: RouteSettings(
-                                              arguments:
-                                                  await fetchCharacterDetails(
-                                                      u, c),
+                                              arguments: i,
                                             )));
                                   },
                                   child: Card(
@@ -319,7 +266,7 @@ class _CharacterListState extends State<CharacterList> {
                                                       color: Colors.black),
                                                   children: <TextSpan>[
                                                     TextSpan(
-                                                      text: c.classs.name,
+                                                      text: i.name,
                                                       style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.bold,
@@ -335,9 +282,8 @@ class _CharacterListState extends State<CharacterList> {
                                           children: <Widget>[
                                             SizedBox(
                                               child: Image.network(
-                                                c.image,
-                                                width: 100,
-                                                height: 100,
+                                                i.imagePath,
+                                                height: 150,
                                                 fit: BoxFit.fill,
                                               ),
                                             ),
@@ -345,8 +291,7 @@ class _CharacterListState extends State<CharacterList> {
                                               width: 10,
                                             ),
                                             Flexible(
-                                              child: Text(c.classs.description),
-                                              flex: 100,
+                                              child: Text(i.type.description),
                                             ),
                                           ],
                                         )

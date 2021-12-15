@@ -1,5 +1,6 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, unused_import, prefer_const_constructors, use_key_in_widget_constructors, prefer_const_constructors_in_immutables
 
+import 'package:borderlandapp/main.dart';
 import 'package:flutter/material.dart';
 import 'package:borderlandapp/items.dart';
 import 'package:borderlandapp/characters.dart';
@@ -8,14 +9,17 @@ import 'package:borderlandapp/settings.dart';
 import 'package:borderlandapp/planets.dart';
 import 'package:borderlandapp/accueil.dart';
 import 'package:borderlandapp/characterdetails.dart';
-
+import 'package:borderlandapp/model/models.dart';
+import 'package:borderlandapp/navdraw.dart';
+import 'package:borderlandapp/itemsfilter.dart';
 
 class NavDrawer extends StatelessWidget {
-  
-
+  NavDrawer({required this.glob});
+  final User glob;
 
   @override
   Widget build(BuildContext context) {
+    
     return Drawer(
       child: Column(
         children: <Widget> [
@@ -44,22 +48,28 @@ class NavDrawer extends StatelessWidget {
                     style: TextButton.styleFrom(
                       textStyle: const TextStyle(fontSize: 20),
                     ),
-                    onPressed: (){
+                    onPressed: (){                      
                       Navigator.push(context,
                       MaterialPageRoute(
-                        builder: (context) => ItemList(), //pop la fenetre itemlist avec le filtre des weapons
+                        builder: (context) => ItemListFilter(),
+                        settings: RouteSettings(
+                          arguments: glob,
+                        ) //pop la fenetre itemlist avec le filtre des weapons
                       ));
                     },
-                    child: const Text("Weapons"),
+                    child:  Text("Weapons"),
                   ),
                   TextButton(
                     style: TextButton.styleFrom(
                       textStyle: const TextStyle(fontSize: 20),
                     ),
-                    onPressed: (){
+                    onPressed: (){                      
                       Navigator.push(context,
                       MaterialPageRoute(
-                        builder: (context) => ItemList(), //pop la fenetre itemlist avec le filtre des grenades
+                        builder: (context) => ItemListFilter(/*filter: "Grenade",*/),
+                        settings: RouteSettings(
+                          arguments: glob,
+                        ) //pop la fenetre itemlist avec le filtre des grenades
                       ));
                     },
                      child: const Text("Grenades"),
