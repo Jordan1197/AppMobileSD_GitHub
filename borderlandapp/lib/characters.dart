@@ -283,7 +283,6 @@ class _CharacterListState extends State<CharacterList> {
                                 ),
                               ),
                               Container(
-                                height: 200,
                                 width: MediaQuery.of(context).size.width,
                                 child: GestureDetector(
                                   onTap: () async {
@@ -313,20 +312,27 @@ class _CharacterListState extends State<CharacterList> {
                                               MainAxisAlignment.center,
                                           children: <Widget>[
                                             Flexible(
-                                                child: RichText(
-                                              text: TextSpan(
-                                                  style: TextStyle(
-                                                      color: Colors.black),
-                                                  children: <TextSpan>[
-                                                    TextSpan(
-                                                      text: c.classs.name,
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 20),
-                                                    )
-                                                  ]),
-                                            )),
+                                                child: Padding(
+                                                    padding:
+                                                        EdgeInsets.fromLTRB(
+                                                            0, 10, 0, 20),
+                                                    child: RichText(
+                                                      text: TextSpan(
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.black),
+                                                          children: <TextSpan>[
+                                                            TextSpan(
+                                                              text:
+                                                                  c.classs.name,
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize: 20),
+                                                            )
+                                                          ]),
+                                                    ))),
                                           ],
                                         ),
                                         Row(
@@ -373,7 +379,9 @@ class _CharacterListState extends State<CharacterList> {
               backgroundColor: Color.fromARGB(0, 255, 0, 0),
             );
           }),
-      drawer: NavDrawer(glob: globalUser,),
+      drawer: NavDrawer(
+        glob: globalUser,
+      ),
       bottomNavigationBar: customNavBar,
     );
   }
