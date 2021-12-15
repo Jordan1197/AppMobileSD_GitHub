@@ -345,7 +345,7 @@ Future<void> postPlanet (String name, String desc, User u) async{
       'Token': u.token,
     },
     body: jsonEncode(<String, String>{
-          'id':"",
+          'id':'0',
           'name':name,
           'description':desc,
           'image':'https://chillchonkers.mypinata.cloud/ipfs/QmU1kZNZDdQRSQcS1e5ByzriZN97tMSWtxvfBgPEQeQWSZ'
