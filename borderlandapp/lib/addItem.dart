@@ -15,115 +15,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 
-//API CALLS
-List<EquipmentType> types = [];
-List<String> typesName = [];
-List<Rarity> rarities = [];
-List<String> raritiesName = [];
-List<Ennemy> ennemies = [];
-List<String> ennemiesNames = [];
-
-Future<List<EquipmentType>> fetchEqTypes(Future<User> user) async {
-  User u = await user;
-  final response = await http.get(
-    Uri.parse(
-        'https://borderlands3apisd.azurewebsites.net/api/EquipmentTypes/'),
-    headers: {
-      'Access-Control-Allow-Headers': '*',
-      'Access-Control-Allow-Origin': "*",
-      'Access-Control-Allow-Methods': "*",
-      'Content-Type': 'application/json',
-      'Token': u.token,
-    },
-  );
-
-  if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-
-    types = List<EquipmentType>.from(
-        json.decode(response.body).map((data) => EquipmentType.fromJson(data)));
-    if (typesName.isEmpty) {
-      for (var i = 0; i < types.length; i++) {
-        typesName.add(types[i].name);
-      }
-    }
-
-    return types;
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load equipment types');
-  }
-}
-
-Future<List<Rarity>> fetchRarities(Future<User> user) async {
-  User u = await user;
-  final response = await http.get(
-    Uri.parse(
-        'https://borderlands3apisd.azurewebsites.net/api/Rarities/'),
-    headers: {
-      'Access-Control-Allow-Headers': '*',
-      'Access-Control-Allow-Origin': "*",
-      'Access-Control-Allow-Methods': "*",
-      'Content-Type': 'application/json',
-      'Token': u.token,
-    },
-  );
-
-  if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-
-    rarities = List<Rarity>.from(
-        json.decode(response.body).map((data) => Rarity.fromJson(data)));
-    if (raritiesName.isEmpty) {
-      for (var i = 0; i < types.length; i++) {
-        raritiesName.add(rarities[i].name);
-      }
-    }
-
-    return rarities;
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load rarities');
-  }
-}
-
-Future<List<Ennemy>> fetchEnnemies(Future<User> user) async {
-  User u = await user;
-  final response = await http.get(
-    Uri.parse(
-        'https://borderlands3apisd.azurewebsites.net/api/Ennemies/'),
-    headers: {
-      'Access-Control-Allow-Headers': '*',
-      'Access-Control-Allow-Origin': "*",
-      'Access-Control-Allow-Methods': "*",
-      'Content-Type': 'application/json',
-      'Token': u.token,
-    },
-  );
-
-  if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-
-    ennemies = List<Ennemy>.from(
-        json.decode(response.body).map((data) => Ennemy.fromJson(data)));
-    if (ennemiesNames.isEmpty) {
-      for (var i = 0; i < types.length; i++) {
-        ennemiesNames.add(types[i].name);
-      }
-    }
-
-    return ennemies;
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load ennemies');
-  }
-}
 
 void main() {
   runApp(const MyApp());
@@ -136,11 +27,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Manage Items',
+      title: 'Manage Planets',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MangageItems(title: 'Manage Items'),
+      home: const MangageItems(title: 'Manage Planets'),
     );
   }
 }
@@ -166,7 +57,6 @@ class _MangageItems extends State<MangageItems> {
   }
 
   final nameController = TextEditingController();
-  final redTextController = TextEditingController();
   final descriptionController = TextEditingController();
   var picker;
 
@@ -179,8 +69,6 @@ class _MangageItems extends State<MangageItems> {
     Future<User> u;
     var globalUser = ModalRoute.of(context)!.settings.arguments as User;
     u = UserLogged(globalUser.name, globalUser.password);
-    futureEqTypes = fetchEqTypes(u);
-    futureRarities = fetchRarities(u);
     //Title
     final h1 = Padding(
       padding: const EdgeInsets.fromLTRB(0, 10, 0, 20),
@@ -189,7 +77,7 @@ class _MangageItems extends State<MangageItems> {
             style: TextStyle(color: Colors.black),
             children: <TextSpan>[
               TextSpan(
-                text: 'Manage Items',
+                text: 'Manage Planets',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               )
             ]),
@@ -212,22 +100,6 @@ class _MangageItems extends State<MangageItems> {
           ),
         ));
 
-    //label RedText
-    final redText = Container(
-        margin: const EdgeInsets.fromLTRB(0, 15, 0, 0),
-        width: MediaQuery.of(context).size.width / 2,
-        child: TextFormField(
-          controller: redTextController,
-          obscureText: false,
-          decoration: InputDecoration(
-            contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-            labelText: "Red Text",
-            hintText: "Red Text",
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
-          ),
-        ));
-
     //label Description
     final description = Container(
         margin: const EdgeInsets.fromLTRB(0, 15, 0, 0),
@@ -244,108 +116,7 @@ class _MangageItems extends State<MangageItems> {
           ),
         ));
 
-    //Label Equipment
-    const equipmentLabel = Padding(
-        padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
-        child: Text(
-          "Equipment",
-          textAlign: TextAlign.center,
-        ));
-    late final equipments = Container(
-        margin: const EdgeInsets.fromLTRB(0, 15, 0, 0),
-        width: MediaQuery.of(context).size.width / 2,
-        child: DropdownButton<String>(
-          value: dropdownValue,
-          onChanged: (String? newValue) {
-            setState(() {
-              dropdownValue = newValue!;
-            });
-          },
-          style: const TextStyle(color: Colors.blue),
-          selectedItemBuilder: (BuildContext context) {
-            return typesName.map((String value) {
-              return Text(
-                dropdownValue,
-                style: const TextStyle(color: Colors.black),
-              );
-            }).toList();
-          },
-          items: typesName.map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
-        ));
-
-    //Label Equipment
-    const rarityLabel = Padding(
-        padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
-        child: Text(
-          "Rarity",
-          textAlign: TextAlign.center,
-        ));
-    final rarities = Container(
-        margin: const EdgeInsets.fromLTRB(0, 15, 0, 0),
-        width: MediaQuery.of(context).size.width / 2,
-        child: DropdownButton<String>(
-          value: rarityValue,
-          onChanged: (String? newValue) {
-            setState(() {
-              rarityValue = newValue!;
-            });
-          },
-          style: const TextStyle(color: Colors.blue),
-          selectedItemBuilder: (BuildContext context) {
-            return raritiesName.map((String value) {
-              return Text(
-                rarityValue,
-                style: const TextStyle(color: Colors.black),
-              );
-            }).toList();
-          },
-          items: raritiesName.map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
-        ));
-
-    //Label Equipment
-    const ennemyLabel = Padding(
-        padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
-        child: Text(
-          "Ennemy",
-          textAlign: TextAlign.center,
-        ));
-    final ennemies = Container(
-        margin: const EdgeInsets.fromLTRB(0, 15, 0, 0),
-        width: MediaQuery.of(context).size.width / 2,
-        child: DropdownButton<String>(
-          value: ennemyValue,
-          onChanged: (String? newValue) {
-            setState(() {
-              ennemyValue = newValue!;
-            });
-          },
-          style: const TextStyle(color: Colors.blue),
-          selectedItemBuilder: (BuildContext context) {
-            return ennemiesNames.map((String value) {
-              return Text(
-                ennemyValue,
-                style: const TextStyle(color: Colors.black),
-              );
-            }).toList();
-          },
-          items: ennemiesNames.map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
-        ));
-
+    
     void _asyncFileUpload(File file) async {
       //create multipart request for POST or PATCH method
       var request = http.MultipartRequest("POST", Uri.parse("<url>"));
@@ -394,7 +165,7 @@ class _MangageItems extends State<MangageItems> {
         minWidth: 300,
         padding: const EdgeInsets.fromLTRB(0, 20.0, 0, 20.0),
         onPressed: () async {
-          postRequest();
+          postPlanet(nameController.text,descriptionController.text,globalUser);
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -546,14 +317,7 @@ class _MangageItems extends State<MangageItems> {
           children: <Widget>[
             h1,
             nameField,
-            redText,
             description,
-            equipmentLabel,
-            equipments,
-            rarityLabel,
-            rarities,
-            ennemyLabel,
-            ennemies,
             const SizedBox(
               height: 20.0,
             ),
@@ -571,16 +335,23 @@ class _MangageItems extends State<MangageItems> {
   }
 }
 
-Future<http.Response> postRequest() async {
-  Uri url = Uri.parse(
-      'https://pae.ipportalegre.pt/testes2/wsjson/api/app/ws-authenticate');
+Future<void> postPlanet (String name, String desc, User u) async{
+  
+    final response =  await http.post(
+    Uri.parse('https://borderlands3apisd.azurewebsites.net/api/Planets/'),
 
-  Map data = {'apikey': '12345678901234567890'};
-  //encode Map to JSON
-  var body = json.encode(data);
-
-  var response = await http.post(url,
-      headers: {"Content-Type": "application/json"}, body: body);
-
-  return response;
+    headers: {
+      'Access-Control-Allow-Headers': '*',          
+      'Access-Control-Allow-Origin': "*",
+      'Access-Control-Allow-Methods': "*",
+      'Content-Type': 'application/json',
+      'Token': u.token,
+    },
+    body: jsonEncode(<String, String>{
+          'id':'0',
+          'name':name,
+          'description':desc,
+          'image':'https://chillchonkers.mypinata.cloud/ipfs/QmU1kZNZDdQRSQcS1e5ByzriZN97tMSWtxvfBgPEQeQWSZ'
+        }),
+    );
 }
