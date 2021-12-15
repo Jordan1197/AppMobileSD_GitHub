@@ -313,11 +313,14 @@ class _SettingsState extends State<Settings> {
             p1,
             theme,
             h2,
-            warning,
+            
             if(globalUser.role == "Admin")
-              addButton
-            else
-              addButtonDisable,
+              ... [addButton]
+            else ...[
+               addButtonDisable,
+               warning,
+            ],
+             
              
             
             signout,
