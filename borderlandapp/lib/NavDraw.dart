@@ -66,7 +66,7 @@ class NavDrawer extends StatelessWidget {
                     onPressed: (){                      
                       Navigator.push(context,
                       MaterialPageRoute(
-                        builder: (context) => ItemListFilter(/*filter: "Grenade",*/),
+                        builder: (context) => ItemListFilter(),
                         settings: RouteSettings(
                           arguments: glob,
                         ) //pop la fenetre itemlist avec le filtre des grenades
@@ -81,7 +81,10 @@ class NavDrawer extends StatelessWidget {
                     onPressed: (){
                       Navigator.push(context,
                       MaterialPageRoute(
-                        builder: (context) => ItemList(), //pop la fenetre itemlist avec le filtre des shields
+                        builder: (context) => ItemListFilter(),
+                        settings: RouteSettings(
+                          arguments: glob,
+                        ) //pop la fenetre itemlist avec le filtre des shields
                       ));
                     },
                      child: const Text("Shield"),
@@ -93,7 +96,10 @@ class NavDrawer extends StatelessWidget {
                     onPressed: (){
                       Navigator.push(context,
                       MaterialPageRoute(
-                        builder: (context) => ItemList(), //pop la fenetre itemlist avec le filtre des artifacts
+                        builder: (context) => ItemListFilter(),
+                        settings: RouteSettings(
+                          arguments: glob,
+                        ) //pop la fenetre itemlist avec le filtre des artifacts
                       ));
                     },
                      child: const Text("Artifacts"),
@@ -105,7 +111,10 @@ class NavDrawer extends StatelessWidget {
                     onPressed: (){
                       Navigator.push(context,
                       MaterialPageRoute(
-                        builder: (context) => ItemList(), //pop la fenetre itemlist avec le filtre des class mods
+                        builder: (context) => ItemListFilter(),
+                        settings: RouteSettings(
+                          arguments: glob,
+                        ) //pop la fenetre itemlist avec le filtre des class mods
                       ));
                     },
                      child: const Text("Class mods"),
@@ -130,7 +139,10 @@ class NavDrawer extends StatelessWidget {
                     onPressed: (){
                       Navigator.push(context,
                       MaterialPageRoute(
-                        builder: (context) => Accueil(),// characterdetails(), //pop la fenetre détails du characters
+                        builder: (context) => CharacterList(),
+                        settings: RouteSettings(
+                          arguments: glob,
+                        )// characterdetails(), //pop la fenetre détails du characters
                       ));
                     },
                     child: const Text("Amara"),
@@ -142,7 +154,10 @@ class NavDrawer extends StatelessWidget {
                     onPressed: (){
                       Navigator.push(context,
                       MaterialPageRoute(
-                        builder: (context) => Accueil(),// characterdetails(), //pop la fenetre détails du characters
+                        builder: (context) => CharacterList(),
+                        settings: RouteSettings(
+                          arguments: glob,
+                        )// characterdetails(), //pop la fenetre détails du characters
                       ));
                     },
                     child: const Text("Fl4k"),
@@ -154,7 +169,10 @@ class NavDrawer extends StatelessWidget {
                     onPressed: (){
                       Navigator.push(context,
                       MaterialPageRoute(
-                        builder: (context) => Accueil(),// characterdetails(), //pop la fenetre détails du characters
+                        builder: (context) => CharacterList(),
+                        settings: RouteSettings(
+                          arguments: glob,
+                        )/// characterdetails(), //pop la fenetre détails du characters
                       ));
                     },
                     child: const Text("Moze"),
@@ -166,7 +184,10 @@ class NavDrawer extends StatelessWidget {
                     onPressed: (){
                       Navigator.push(context,
                       MaterialPageRoute(
-                        builder: (context) => Accueil(),// characterdetails(), //pop la fenetre détails du characters
+                        builder: (context) => CharacterList(),
+                        settings: RouteSettings(
+                          arguments: glob,
+                        )/// characterdetails(), //pop la fenetre détails du characters
                       ));
                     },
                     child: const Text("Zane"),
@@ -191,10 +212,13 @@ class NavDrawer extends StatelessWidget {
                     onPressed: (){
                       Navigator.push(context,
                       MaterialPageRoute(
-                        builder: (context) => Accueil(),// ennemiedetails(), //pop la fenetre détails de l'ennemie
+                        builder: (context) => EnnemiesList(title: "Ennemie List",),
+                        settings: RouteSettings(
+                          arguments: glob,
+                        )// ennemiedetails(), //pop la fenetre détails de l'ennemie
                       ));
                     },
-                    child: const Text("Skag"),
+                    child: const Text("Ennemie"),
                   ),
                                   
               ],
@@ -217,23 +241,14 @@ class NavDrawer extends StatelessWidget {
                     onPressed: (){
                       Navigator.push(context,
                       MaterialPageRoute(
-                        builder: (context) => PlanetList(),//pop les planets
+                        builder: (context) => PlanetList(),
+                        settings: RouteSettings(
+                          arguments: glob,
+                        )//pop les planets
                       ));
                     },
                     child: const Text("Planets"),
-                  ),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      textStyle: const TextStyle(fontSize: 20),
-                    ),
-                    onPressed: (){
-                      Navigator.push(context,
-                      MaterialPageRoute(
-                        builder: (context) => PlanetList(),//pop les elements
-                      ));
-                    },
-                    child: const Text("Elements"),
-                  ),             
+                  ),                               
               ],
               
           ),
