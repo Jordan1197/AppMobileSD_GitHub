@@ -231,7 +231,6 @@ class _ItemListState extends State<ItemList> {
                                 ),
                               ),
                               Container(
-                                height: 200,
                                 width: MediaQuery.of(context).size.width,
                                 child: GestureDetector(
                                   onTap: () async {
@@ -282,7 +281,7 @@ class _ItemListState extends State<ItemList> {
                                             SizedBox(
                                               child: Image.network(
                                                 i.imagePath,
-                                                height: 150,
+                                                height: 40,
                                                 fit: BoxFit.fill,
                                               ),
                                             ),
@@ -317,7 +316,9 @@ class _ItemListState extends State<ItemList> {
               backgroundColor: Color.fromARGB(0, 255, 0, 0),
             );
           }),
-      drawer: NavDrawer(glob: globalUser,),
+      drawer: NavDrawer(
+        glob: globalUser,
+      ),
       bottomNavigationBar: customNavBar,
     );
   }

@@ -45,23 +45,23 @@ Future<EnnemyDetailsCall> fetchEnnemyDetails(
     Future<User> user, Ennemy e) async {
   User u = await user;
   final response = await http.get(
-    Uri.parse(
-        'https://borderlands3apisd.azurewebsites.net/api/Ennemies/name/' +
-            e.name),
+    Uri.parse('https://borderlands3apisd.azurewebsites.net/api/Ennemies/name/' +
+        e.name),
     headers: {
       'Access-Control-Allow-Headers': '*',
       'Access-Control-Allow-Origin': "*",
       'Access-Control-Allow-Methods': "*",
       'Content-Type': 'application/json',
-      'Token': u.token, 
+      'Token': u.token,
     },
   );
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
-    EnnemyDetailsCall ch = EnnemyDetailsCall.fromJson(jsonDecode(response.body)) ;
+    EnnemyDetailsCall ch =
         EnnemyDetailsCall.fromJson(jsonDecode(response.body));
+    EnnemyDetailsCall.fromJson(jsonDecode(response.body));
 
     return ch;
   } else {
@@ -70,7 +70,6 @@ Future<EnnemyDetailsCall> fetchEnnemyDetails(
     throw Exception('Failed to load ennemy');
   }
 }
-
 
 void main() {
   runApp(const MyApp());
@@ -247,7 +246,7 @@ class _EnnemiesListState extends State<EnnemiesList> {
 
     //fin navbar
 
-     return Scaffold(
+    return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(),
       body: FutureBuilder<List<Ennemy>>(
@@ -274,7 +273,7 @@ class _EnnemiesListState extends State<EnnemiesList> {
                                       style: TextStyle(color: Colors.black),
                                       children: <TextSpan>[
                                         TextSpan(
-                                          text: "Ennemies",
+                                          text: e.name,
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 20),
@@ -283,7 +282,6 @@ class _EnnemiesListState extends State<EnnemiesList> {
                                 ),
                               ),
                               Container(
-                                height: 200,
                                 width: MediaQuery.of(context).size.width,
                                 child: GestureDetector(
                                   onTap: () async {
@@ -293,7 +291,9 @@ class _EnnemiesListState extends State<EnnemiesList> {
                                             builder: (context) =>
                                                 const EnnemyDetails(),
                                             settings: RouteSettings(
-                                              arguments: await fetchEnnemyDetails(u, e),
+                                              arguments:
+                                                  await fetchEnnemyDetails(
+                                                      u, e),
                                             )));
                                   },
                                   child: Card(
@@ -311,39 +311,40 @@ class _EnnemiesListState extends State<EnnemiesList> {
                                               MainAxisAlignment.center,
                                           children: <Widget>[
                                             Flexible(
-                                                child: RichText(
-                                              text: TextSpan(
-                                                  style: TextStyle(
-                                                      color: Colors.black),
-                                                  children: <TextSpan>[
-                                                    TextSpan(
-                                                      text: e.name,
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 20),
-                                                    )
-                                                  ]),
-                                            )),
+                                              child: Padding(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      0, 10, 0, 20),
+                                                  child: RichText(
+                                                    text: TextSpan(
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.black),
+                                                        children: <TextSpan>[
+                                                          TextSpan(
+                                                            text: e.ennemieType
+                                                                .typeName,
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize: 20),
+                                                          )
+                                                        ]),
+                                                  )),
+                                            ),
                                           ],
                                         ),
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: <Widget>[
-                                            SizedBox(
-                                             // child: Image.network(
-                                            //    e.,
-                                            //    height: 150,
-                                            //    fit: BoxFit.fill,
-                                           //   ),
-                                            ),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
                                             Flexible(
-                                              child: Text(e.ennemieType.description),
-                                            ),
+                                                child: Padding(
+                                              padding: EdgeInsets.fromLTRB(
+                                                  40, 0, 0, 40),
+                                              child: Text(
+                                                  e.ennemieType.description),
+                                            )),
                                           ],
                                         )
                                       ],
@@ -369,7 +370,9 @@ class _EnnemiesListState extends State<EnnemiesList> {
               backgroundColor: Color.fromARGB(0, 255, 0, 0),
             );
           }),
-      drawer: NavDrawer(glob: globalUser,),
+      drawer: NavDrawer(
+        glob: globalUser,
+      ),
       bottomNavigationBar: customNavBar,
     );
   }
