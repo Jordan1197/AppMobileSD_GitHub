@@ -260,7 +260,6 @@ class _PlanetListState extends State<PlanetList> {
                                 ),
                               ),
                               Container(
-                                  height: 200,
                                   width: MediaQuery.of(context).size.width,
                                   child: GestureDetector(
                                       child: Card(
@@ -313,7 +312,9 @@ class _PlanetListState extends State<PlanetList> {
               backgroundColor: Color.fromARGB(0, 255, 0, 0),
             );
           }),
-      drawer: NavDrawer(glob: globalUser,),
+      drawer: NavDrawer(
+        glob: globalUser,
+      ),
       bottomNavigationBar: customNavBar,
     );
   }

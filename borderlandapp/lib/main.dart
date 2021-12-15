@@ -1,3 +1,5 @@
+import 'dart:js';
+
 import 'package:flutter/material.dart';
 import 'package:borderlandapp/accueil.dart';
 import 'package:borderlandapp/model/models.dart';
@@ -65,7 +67,7 @@ String Decrypt(String password){
   return decryptedPassword;
 }
 var errorlogin = Text("");
-Future<bool> LoginUser (String username, String password) async{
+Future<bool> LoginUser (String username, String password, BuildContext context) async{
   
   
   
@@ -166,15 +168,13 @@ class _LoginState extends State<Login> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 20.0),
         onPressed: () async {
-                if(await LoginUser(nameController.text,pwdController.text) == true){
+                if(await LoginUser(nameController.text,pwdController.text,context) == true){
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const Accueil(),
                                         settings: RouteSettings(arguments: await globalUser,)
                 ));
                 }
                 else{
-                  Navigator.push(context, MaterialPageRoute(builder: (context) =>  Login(title: "Login",)
-                                        
-                ));
+                  showDialog(context: context, builder:(_) => AlertDialog(title: Text("Wrong credentials"),content: Text("F cringe"),actions: <Widget>[TextButton(onPressed:(){Navigator.pop(context);}, child: const Text("OK"))],));        
                 }
                 },
                 child: Text('Login',
