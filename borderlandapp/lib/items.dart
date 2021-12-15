@@ -215,21 +215,6 @@ class _ItemListState extends State<ItemList> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
-                                child: RichText(
-                                  text: TextSpan(
-                                      style: TextStyle(color: Colors.black),
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                          text: "Items",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 20),
-                                        )
-                                      ]),
-                                ),
-                              ),
                               Container(
                                 width: MediaQuery.of(context).size.width,
                                 child: GestureDetector(
