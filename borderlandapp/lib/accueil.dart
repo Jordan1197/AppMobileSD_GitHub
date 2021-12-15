@@ -5,7 +5,7 @@ import 'package:borderlandapp/characters.dart';
 import 'package:borderlandapp/ennemies.dart';
 import 'package:borderlandapp/settings.dart';
 import 'package:borderlandapp/planets.dart';
-import 'package:borderlandapp/NavDraw.dart';
+import 'package:borderlandapp/navdraw.dart';
 import 'package:borderlandapp/model/models.dart';
 
 void main() {
@@ -269,7 +269,9 @@ class _AccueilState extends State<Accueil> {
 
     return Scaffold(
       appBar: AppBar(),
-      body: Center(
+      body:ListView(
+        children: [
+          Center(
         child: Container(
           color: Colors.white,
           child: Padding(
@@ -292,6 +294,9 @@ class _AccueilState extends State<Accueil> {
           ),
         ),
       ),
+        ],
+      ), 
+      
       drawer: NavDrawer(),
       bottomNavigationBar: customNavBar,
     );

@@ -177,7 +177,10 @@ class _LoginState extends State<Login> {
                 ));
                 }
                 },
-                child: Text('Login'),                 
+                child: Text('Login',
+                textAlign: TextAlign.center,
+                style: TextStyle(color:Colors.white),),
+                               
               )
       );
 

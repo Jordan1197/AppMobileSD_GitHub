@@ -6,7 +6,7 @@ import 'package:borderlandapp/characters.dart';
 import 'package:borderlandapp/ennemies.dart';
 import 'package:borderlandapp/settings.dart';
 import 'package:borderlandapp/accueil.dart';
-import 'package:borderlandapp/NavDraw.dart';
+import 'package:borderlandapp/navdraw.dart';
 import 'package:borderlandapp/planets.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';

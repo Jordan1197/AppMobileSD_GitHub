@@ -8,7 +8,7 @@ import 'package:borderlandapp/settings.dart';
 import 'package:borderlandapp/Planets.dart';
 import 'package:borderlandapp/accueil.dart';
 import 'package:borderlandapp/characterdetails.dart';
-import 'package:borderlandapp/NavDraw.dart';
+import 'package:borderlandapp/navdraw.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
@@ -346,6 +346,7 @@ class _CharacterListState extends State<CharacterList> {
                                             ),
                                             Flexible(
                                               child: Text(c.classs.description),
+                                              flex: 100,
                                             ),
                                           ],
                                         )
