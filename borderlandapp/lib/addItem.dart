@@ -1,7 +1,10 @@
 // ignore_for_file: file_names
 
+import 'dart:js';
+
 import 'package:borderlandapp/main.dart';
 import 'package:borderlandapp/model/models.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:borderlandapp/ennemies.dart';
 import 'package:borderlandapp/items.dart';
@@ -84,6 +87,32 @@ class _MangageItems extends State<MangageItems> {
       ),
     );
 
+    showAlertDialog(BuildContext context) {
+
+  // set up the button
+  Widget okButton = TextButton(
+    child: Text("OK"),
+    onPressed: () { },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("My title"),
+    content: Text("This is my message."),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
     //label Name
     final nameField = Container(
         margin: const EdgeInsets.fromLTRB(0, 15, 0, 0),
@@ -165,15 +194,7 @@ class _MangageItems extends State<MangageItems> {
         minWidth: 300,
         padding: const EdgeInsets.fromLTRB(0, 20.0, 0, 20.0),
         onPressed: () async {
-          postPlanet(nameController.text,descriptionController.text,globalUser);
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      const MangageItems(title: 'Manage Items'),
-                      settings: RouteSettings(
-                      arguments: globalUser,)));
-                      
+          postPlanet(nameController.text,descriptionController.text,globalUser,context);
         },
         child: const Text(
           "Add",
@@ -321,7 +342,6 @@ class _MangageItems extends State<MangageItems> {
             const SizedBox(
               height: 20.0,
             ),
-            imgbutton,
             const SizedBox(
               height: 20.0,
             ),
@@ -335,8 +355,10 @@ class _MangageItems extends State<MangageItems> {
   }
 }
 
-Future<void> postPlanet (String name, String desc, User u) async{
+
+Future<void> postPlanet (String name, String desc, User u,BuildContext ctx) async{
   
+  if(name.isNotEmpty && desc.isNotEmpty && u.role == "Admin"){
     final response =  await http.post(
     Uri.parse('https://borderlands3apisd.azurewebsites.net/api/Planets/'),
 
@@ -354,4 +376,10 @@ Future<void> postPlanet (String name, String desc, User u) async{
           'image':'https://chillchonkers.mypinata.cloud/ipfs/QmU1kZNZDdQRSQcS1e5ByzriZN97tMSWtxvfBgPEQeQWSZ'
         }),
     );
+    showDialog(context: ctx, builder:(_) => AlertDialog(title: const Text("Success"),content: const Text("Planet added with success!"),actions: <Widget>[TextButton(onPressed:(){Navigator.pop(ctx);}, child: const Text("OK"))],));
+  }
+  else{
+   showDialog(context: ctx, builder:(_) => AlertDialog(title: const Text("Invalid form fields."),content: const Text("Please fill all the form fields and try again."),actions: <Widget>[TextButton(onPressed:(){Navigator.pop(ctx);}, child: const Text("OK"))],));
+  }
+    
 }

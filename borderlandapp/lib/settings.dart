@@ -73,42 +73,6 @@ class _SettingsState extends State<Settings> {
               ]),
         ));
 
-    final p1 = Padding(
-        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-        child: RichText(
-          text: TextSpan(
-              style: TextStyle(color: Colors.black),
-              children: const <TextSpan>[
-                TextSpan(
-                    text: 'Theme :',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-              ]),
-        ));
-
-    final theme = Padding(
-        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            RichText(
-              text: TextSpan(
-                  style: TextStyle(color: Colors.black),
-                  children: const <TextSpan>[
-                    TextSpan(
-                      text: 'Light/Dark :',
-                    ),
-                  ]),
-            ),
-            Switch(
-              value: false,
-              onChanged: (value) {
-                setState(() {});
-              },
-              activeTrackColor: Colors.blueAccent,
-              activeColor: Colors.blue,
-            )
-          ],
-        ));
 
     final h2 = Padding(
         padding: const EdgeInsets.fromLTRB(0, 100, 0, 10),
@@ -310,8 +274,6 @@ class _SettingsState extends State<Settings> {
           mainAxisAlignment: MainAxisAlignment.start, //vertical
           children: <Widget>[
             h1,
-            p1,
-            theme,
             h2,
             
             if(globalUser.role == "Admin")
